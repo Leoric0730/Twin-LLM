@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 
-from langchain_community.document_loaders import AsyncHtmlLoader
+import httpx
 from langchain_community.document_transformers.html2text import Html2TextTransformer
 from loguru import logger
 
@@ -24,15 +24,52 @@ class CustomArticleCrawler(BaseCrawler):
 
         logger.info(f"Starting scrapping article: {link}")
 
-        loader = AsyncHtmlLoader([link])
-        docs = loader.load()
+        html_content = None
+        
+        try:
+            # First attempt with SOCKS proxy
+            socks_proxy = "socks5://127.0.0.1:7890"
+            with httpx.Client(proxy=socks_proxy, timeout=30) as client:
+                response = client.get(link)
+                response.raise_for_status()
+                html_content = response.text
+                logger.info(f"Successfully fetched article using SOCKS proxy: {link}")
+        except Exception as e:
+            logger.warning(f"Failed to fetch with SOCKS proxy: {e}. Trying HTTP proxy...")
+            
+            try:
+                # Second attempt with HTTP proxy
+                http_proxy = "http://127.0.0.1:7890"
+                with httpx.Client(proxy=http_proxy, timeout=30) as client:
+                    response = client.get(link)
+                    response.raise_for_status()
+                    html_content = response.text
+                    logger.info(f"Successfully fetched article using HTTP proxy: {link}")
+            except Exception as e:
+                logger.warning(f"Failed to fetch with HTTP proxy: {e}. Trying without proxy...")
+                
+                try:
+                    # Third attempt without proxy
+                    with httpx.Client(timeout=30) as client:
+                        response = client.get(link)
+                        response.raise_for_status()
+                        html_content = response.text
+                        logger.info(f"Successfully fetched article without proxy: {link}")
+                except Exception as e:
+                    logger.error(f"All attempts failed to fetch article: {e}")
+                    raise
 
         html2text = Html2TextTransformer()
-        docs_transformed = html2text.transform_documents(docs)
+        
+        # Create a dummy Document object for the transformer
+        from langchain_core.documents import Document
+        doc = Document(page_content=html_content, metadata={"source": link})
+        
+        docs_transformed = html2text.transform_documents([doc])
         doc_transformed = docs_transformed[0]
 
         content = {
-            "Title": doc_transformed.metadata.get("title"),
+            "Title": doc_transformed.metadata.get("title", "N/A"),
             "Subtitle": doc_transformed.metadata.get("description"),
             "Content": doc_transformed.page_content,
             "language": doc_transformed.metadata.get("language"),

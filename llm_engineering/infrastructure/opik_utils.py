@@ -8,7 +8,10 @@ from llm_engineering import settings
 
 
 def configure_opik() -> None:
-    if settings.COMET_API_KEY and settings.COMET_PROJECT:
+    # Check if COMET_API_KEY is set and not a placeholder value
+    if (settings.COMET_API_KEY and 
+        settings.COMET_PROJECT and 
+        settings.COMET_API_KEY != "str"):
         try:
             client = OpikConfigurator(api_key=settings.COMET_API_KEY)
             default_workspace = client._get_default_workspace()
@@ -22,5 +25,5 @@ def configure_opik() -> None:
         logger.info("Opik configured successfully.")
     else:
         logger.warning(
-            "COMET_API_KEY and COMET_PROJECT are not set. Set them to enable prompt monitoring with Opik (powered by Comet ML)."
+            "COMET_API_KEY is not set or is a placeholder value. Set it to enable prompt monitoring with Opik (powered by Comet ML)."
         )

@@ -48,7 +48,7 @@ def delete_endpoint_and_config(endpoint_name) -> None:
         logger.error("Error deleting endpoint")
 
     try:
-        response = sagemaker_client.describe_endpoint_config(EndpointConfigName=endpoint_name)
+        response = sagemaker_client.describe_endpoint_config(EndpointConfigName=config_name)
         model_name = response["ProductionVariants"][0]["ModelName"]
     except ClientError:
         logger.error("Error getting model name.")

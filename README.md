@@ -1,22 +1,8 @@
-<div align="center">
-  <h1>👷 LLM Engineer's Handbook</h1>
-  <p class="tagline">Official repository of the <a href="https://www.amazon.com/LLM-Engineers-Handbook-engineering-production/dp/1836200072/">LLM Engineer's Handbook</a> by <a href="https://github.com/iusztinpaul">Paul Iusztin</a> and <a href="https://github.com/mlabonne">Maxime Labonne</a></p>
-</div>
-</br>
-
-<p align="center">
-  <a href="https://www.amazon.com/LLM-Engineers-Handbook-engineering-production/dp/1836200072/">
-    <img src="images/cover_plus.png" alt="Book cover">
-  </a>
-</p>
-
-<p align="center">
-  Find the book on <a href="https://www.amazon.com/LLM-Engineers-Handbook-engineering-production/dp/1836200072/">Amazon</a> or <a href="https://www.packtpub.com/en-us/product/llm-engineers-handbook-9781836200062">Packt</a>
-</p>
-
 ## 🌟 Features
 
-The goal of this book is to create your own end-to-end LLM-based system using best practices:
+Content mainly refered from the LLM Engineering Handbook 
+
+The goal of this repo is to create your own end-to-end LLM-based system using best practices:
 
 - 📝 Data collection & generation
 - 🔄 LLM training pipeline
@@ -27,8 +13,6 @@ The goal of this book is to create your own end-to-end LLM-based system using be
 
 You can download and use the final trained model on [Hugging Face](https://huggingface.co/mlabonne/TwinLlama-3.1-8B-DPO).
 
-> [!IMPORTANT]
-> The code in this GitHub repository is actively maintained and may contain updates not reflected in the book. **Always refer to this repository for the latest version of the code.**
 
 ## 🔗 Dependencies
 
@@ -111,9 +95,6 @@ The code logic and imports flow as follows: `infrastructure` → `model` → `ap
 `code_snippets/`: Independent code examples that can be executed independently.
 
 ## 💻 Installation
-
-> [!NOTE]
-> If you are experiencing issues while installing and running the repository, consider checking the [Issues](https://github.com/PacktPublishing/LLM-Engineers-Handbook/issues) GitHub section for other people who solved similar problems or directly asking us for help.
 
 ### 1. Clone the Repository
 
