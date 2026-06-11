@@ -9,7 +9,7 @@ if __name__ == "__main__":
     set_verbose(True)
 
     query = """
-        My name is Paul Iusztin.
+        My name is Leoric Luo.
         
         Could you draft a LinkedIn post discussing RAG systems?
         I'm particularly interested in:

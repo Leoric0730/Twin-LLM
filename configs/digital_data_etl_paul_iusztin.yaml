@@ -60,3 +60,14 @@ parameters:
     - https://decodingml.substack.com/p/dml-4-key-ideas-you-must-know-to?r=1ttoeh
     - https://decodingml.substack.com/p/dml-how-to-add-real-time-monitoring?r=1ttoeh
     - https://decodingml.substack.com/p/dml-top-6-ml-platform-features-you?r=1ttoeh
+    # --- Harness Engineering articles (added for demo, 2026-06-11) ---
+    - https://addyosmani.com/blog/agent-harness-engineering/
+    - https://www.firecrawl.dev/blog/what-is-an-agent-harness
+    - https://www.augmentcode.com/guides/harness-engineering-ai-coding-agents
+    - https://www.louisbouchard.ai/harness-engineering/
+    - https://madplay.github.io/en/post/harness-engineering
+    - https://hugobowne.substack.com/p/ai-agent-harness-3-principles-for
+    - https://medium.com/@tentenco/the-agent-harness-why-70-of-your-ai-agents-performance-lives-outside-the-model-5093cfe03df1
+    - https://medium.com/@MongoDB/the-agent-harness-why-the-llm-is-the-smallest-part-of-your-agent-system-bce68414ccfd
+    - https://medium.com/@tort_mario/ai-agent-best-practices-production-ready-harness-engineering-2026-guide-c1236d713fac
+    - https://prowe214.medium.com/agentic-coding-harnesses-a-comparison-4db34b87fd5c

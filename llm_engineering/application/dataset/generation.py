@@ -114,36 +114,18 @@ Provide your response in JSON format.
         else:
             assert settings.OPENAI_API_KEY is not None, "OpenAI API key must be set to generate datasets"
 
-            import os
-            # Temporarily clear any proxy settings that might interfere with OpenAI client
-            old_http_proxy = os.environ.pop('http_proxy', None)
-            old_https_proxy = os.environ.pop('https_proxy', None)
-            old_all_proxy = os.environ.pop('all_proxy', None)
-            old_HTTP_PROXY = os.environ.pop('HTTP_PROXY', None)
-            old_HTTPS_PROXY = os.environ.pop('HTTPS_PROXY', None)
-            old_ALL_PROXY = os.environ.pop('ALL_PROXY', None)
-            
-            try:
-                llm = ChatOpenAI(
-                    model=settings.OPENAI_MODEL_ID,
-                    api_key=settings.OPENAI_API_KEY,
-                    max_tokens=2000 if cls.dataset_type == DatasetType.PREFERENCE else 1200,
-                    temperature=0.7,
-                )
-            finally:
-                # Restore proxy settings if they existed
-                if old_http_proxy is not None:
-                    os.environ['http_proxy'] = old_http_proxy
-                if old_https_proxy is not None:
-                    os.environ['https_proxy'] = old_https_proxy
-                if old_all_proxy is not None:
-                    os.environ['all_proxy'] = old_all_proxy
-                if old_HTTP_PROXY is not None:
-                    os.environ['HTTP_PROXY'] = old_HTTP_PROXY
-                if old_HTTPS_PROXY is not None:
-                    os.environ['HTTPS_PROXY'] = old_HTTPS_PROXY
-                if old_ALL_PROXY is not None:
-                    os.environ['ALL_PROXY'] = old_ALL_PROXY
+            # Build the OpenAI client WITH the ambient proxy (HTTP(S)_PROXY) intact.
+            # Region-restricted networks need the proxy to reach api.openai.com; stripping it
+            # forces a direct connection that times out. A generous timeout + retries absorbs
+            # transient proxy hiccups.
+            llm = ChatOpenAI(
+                model=settings.OPENAI_MODEL_ID,
+                api_key=settings.OPENAI_API_KEY,
+                max_tokens=2000 if cls.dataset_type == DatasetType.PREFERENCE else 1200,
+                temperature=0.7,
+                timeout=120,
+                max_retries=5,
+            )
         parser = ListPydanticOutputParser(pydantic_object=cls._get_dataset_sample_type())
 
         chain = llm | parser
